@@ -52,20 +52,19 @@ public class LibroControlador {
     //Accion del formulario anterior
     //required = false para que el error sea la excepcion
     @PostMapping("/formulario")
-    public String crearLibro(ModelMap modelo, @RequestParam Long isbn, @RequestParam String titulo, 
-            @RequestParam(required = false) Integer anio, @RequestParam Integer ejemplares, @RequestParam Integer ejemplaresPrestados, 
-            @RequestParam String autorId, @RequestParam String editorialId, Boolean alta) {
+    public String crearLibro(ModelMap modelo, @RequestParam(required = false) Long isbn, @RequestParam(required = false) String titulo, 
+            @RequestParam(required = false) Integer anio, @RequestParam(required = false) Integer ejemplares, 
+            @RequestParam(required = false) String autorId, @RequestParam(required = false) String editorialId) {
               
         try {
-            libroServicio.crear(isbn, titulo, anio, ejemplares, ejemplaresPrestados, autorId, editorialId, true);          
+            libroServicio.crear(isbn, titulo, anio, ejemplares, autorId, editorialId);          
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
             modelo.put("isbn", isbn);
             modelo.put("titulo", titulo);
             modelo.put("anio", anio);
-            modelo.put("ejemplares", ejemplares);
-            modelo.put("ejemplaresPrestados", ejemplaresPrestados);
-            modelo.put("ejemplaresRestantes", (ejemplares-ejemplaresPrestados)); 
+            modelo.put("ejemplares", ejemplares);           
+            modelo.put("ejemplaresRestantes", (ejemplares)); 
             List<Autor> autores = autorServicio.listar();
             modelo.addAttribute("autores", autores);
             List<Editorial> editoriales = editorialServicio.listar();

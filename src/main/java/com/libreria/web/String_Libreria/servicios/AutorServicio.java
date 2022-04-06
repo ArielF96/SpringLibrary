@@ -52,8 +52,7 @@ public class AutorServicio {
     }
     
     @Transactional
-    public void eliminar(String id)throws Exception{
-        
+    public void eliminar(String id)throws Exception{       
         Optional<Autor> respuesta = autorRepo.findById(id);
         if (respuesta.isPresent()) {
             Autor a = respuesta.get();
@@ -64,10 +63,39 @@ public class AutorServicio {
         }
     }
     
+    @Transactional
+    public void darAlta(String id)throws Exception{      
+        Optional<Autor> respuesta = autorRepo.findById(id);
+        if (respuesta.isPresent()) {
+            Autor a = respuesta.get();
+            a.setAlta(true);
+            autorRepo.save(a);
+        } else {
+            throw new Exception("No se encontró el autor");       
+        }
+    }
+    
+    @Transactional
+    public void eliminarDefinitivamente(String id)throws Exception{      
+        Optional<Autor> respuesta = autorRepo.findById(id);
+        if (respuesta.isPresent()) {
+            Autor a = respuesta.get();
+            a.setAlta(true);
+            autorRepo.delete(a);
+        } else {
+            throw new Exception("No se encontró el autor");       
+        }
+    }
+    
     @Transactional(readOnly = true)
     public List<Autor> listar(){
         return autorRepo.listar();
-    }    
+    }   
+    
+    @Transactional(readOnly = true)
+    public List<Autor> listarEliminados(){
+        return autorRepo.listarEliminados();
+    }   
     
     @Transactional(readOnly = true)
     public Autor buscarPorId(String id){
@@ -79,6 +107,11 @@ public class AutorServicio {
         return autorRepo.buscarPorNombre(nombre);
     }
     
+    @Transactional(readOnly = true)
+    public Autor buscarPorApellido(String apellido){
+        return autorRepo.buscarPorApellido(apellido);
+    }
+    
     public void validar(String nombre, String apellido) throws Exception {
         if (nombre == null || nombre.isEmpty()) {
             throw new Exception("El nombre es inválido");
@@ -86,5 +119,8 @@ public class AutorServicio {
         if (apellido == null || apellido.isEmpty()) {
             throw new Exception("El apellido es inválido");
         }
+        if (buscarPorNombre(nombre) != null && buscarPorApellido(apellido) != null) {
+            throw new Exception("El autor ya existe en la base de datos");
+        }   
     }
 }

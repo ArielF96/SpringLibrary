@@ -80,7 +80,10 @@ public class EditorialServicio {
     public void validar(String nombre) throws Exception {
         if (nombre == null || nombre.isEmpty()) {
             throw new Exception("El nombre es inválido");
-        }       
+        }   
+        if (buscarPorNombre(nombre) != null) {
+            throw new Exception("La editorial ya existe");
+        }
     }
 }
 

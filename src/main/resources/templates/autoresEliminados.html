@@ -14,7 +14,7 @@
         </div>
 
         <div class="container">
-            <h3>Lista de Autores</h3> 
+            <h3>Lista de Autores Eliminados</h3> 
         </div>
         
         <p class="container" th:text="${exito}" style="font-style: italic"></p>
@@ -26,7 +26,7 @@
                 <tr>                                
                     <th scope="col">Apellido</th>
                     <th scope="col">Nombre</th>
-                    <th scope="col">Editar</th>
+                    <th scope="col">Dar de alta</th>  
                     <th scope="col">Eliminar</th>
                 </tr>
             </thead>
@@ -35,11 +35,11 @@
                     <td th:text="${autor.apellido}"></td>
                     <td th:text="${autor.nombre}"></td> 
                     <td>             
-                        <a class="btn btn-primary" th:href="@{/autor/editar/__${autor.id}__}">Editar</a>
-                    </td>
+                        <a class="btn btn-primary" th:href="@{/autor/dar-alta/__${autor.id}__}">Alta</a>
+                    </td>         
                     <td>                        
-                        <a class="btn btn-danger" th:href="@{/autor/eliminar/__${autor.id}__}">Eliminar</a>
-                    </td>                  
+                        <a class="btn btn-danger" th:href="@{/autor/eliminar-definitivamente/__${autor.id}__}">Definitivamente</a>
+                    </td>  
                 </tr>
             </tbody>
         </table>
@@ -47,7 +47,7 @@
         
         <div class="container">
             <a class="btn btn-success" th:href="@{/autor/formulario}">Agregar Autor</a> 
-            <a class="btn btn-primary" th:href="@{/autor/lista-eliminados}">Autores Eliminados</a>
+            <a class="btn btn-primary" th:href="@{/autor/lista}">Lista de Autores</a>
             <a class="btn btn-danger" th:href="@{/}">Volver a la página principal</a>
         </div><br>
         

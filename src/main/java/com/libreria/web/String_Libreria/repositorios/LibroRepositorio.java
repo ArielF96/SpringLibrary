@@ -19,10 +19,16 @@ public interface LibroRepositorio extends JpaRepository<Libro, String> {
     @Query("SELECT l FROM Libro l WHERE l.alta = 1 ORDER BY l.titulo")
     public List<Libro> listar();
     
+    @Query("SELECT l FROM Libro l WHERE l.alta = 1 AND l.ejemplaresRestantes >= 1 ORDER BY l.anio")
+    public List<Libro> listarDisponibles();
+    
     @Query("SELECT l FROM Libro l WHERE l.id = :id")
     public Libro buscarPorId(@Param("id") String id);
     
     @Query("SELECT l FROM Libro l WHERE l.titulo = :titulo")
     public Libro buscarPorTitulo(@Param("titulo") String titulo);
+    
+    @Query("SELECT l FROM Libro l WHERE l.isbn = :isbn")
+    public Libro buscarPorIsbn(@Param("isbn") Long isbn);
     
 }

@@ -6,6 +6,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Agregar Libro</title>
+        <link rel="stylesheet" href="/styles.css">
+
     </head>
     <body>
 
@@ -27,19 +29,21 @@
                 <label class="form-label">Año</label>
                 <input class="form-control" type="number" name="anio" th:value="${anio}"/>
                 <label class="form-label">Ejemplares</label>
-                <input class="form-control" type="number" name="ejemplares" th:value="${ejemplares}"/>
-                <label class="form-label">Ejemplares Prestados</label>
-                <input class="form-control" type="number" name="ejemplaresPrestados" th:value="${ejemplaresPrestados}"/>            
+                <input class="form-control" type="number" name="ejemplares" th:value="${ejemplares}"/>                         
                 
                 <label class="form-label">Autor</label>               
                     <select class="form-select" name="autorId" >
-                        <option th:each="autor : ${autores}" name="autorId" th:value="${autor.id}" th:text="${autor.apellido + ', ' + autor.nombre}" ></option>
+                        <option th:each="autor : ${autores}" name="autorId" th:value="${autor.id}" th:text="${autor.apellido + ', ' + autor.nombre}" ></option>          
                     </select>  
                 
+                <a th:href="@{/autor/formulario}" class="btn btn-outline-success">Agregar Autor</a><br>
+               
                 <label class="form-label">Editorial</label>               
                     <select class="form-select" name="editorialId" >
                         <option th:each="editorial : ${editoriales}" name="editorialId" th:value="${editorial.id}" th:text="${editorial.nombre}" ></option>
                     </select>    
+                
+                <a th:href="@{/editorial/formulario}" class="btn btn-outline-success">Agregar Editorial</a><br>
 
             </div><br> 
 

@@ -32,7 +32,6 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <li><a class="dropdown-item" th:href="@{/libro/lista}">Lista de libros</a></li>
                                 <li><a class="dropdown-item" th:href="@{/libro/formulario}">Agregar libro</a></li>                                
-                                <li><a class="dropdown-item" href="#">Préstamos</a></li>
                             </ul>
                         </li>
 
@@ -53,6 +52,18 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <li><a class="dropdown-item" th:href="@{/editorial/lista}">Lista de editoriales</a></li>    
                                 <li><a class="dropdown-item" th:href="@{/editorial/formulario}">Agregar editorial</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Préstamos
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" th:href="@{/prestamo/formulario}">Préstamo</a></li> 
+                                <li><a class="dropdown-item" th:href="@{/prestamo/lista}">Lista de Préstamos</a></li> 
+                                <li><a class="dropdown-item" th:href="@{/cliente/formulario}">Registrarse</a></li>
+                                <li><a class="dropdown-item" th:href="@{/cliente/login}">Iniciar sesión</a></li> 
                             </ul>
                         </li>
 
@@ -88,7 +99,7 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="/img/prestamo.jpg" class="d-block w-100" alt="Préstamos">
+                    <a th:href="@{/prestamo/formulario}"><img src="/img/prestamo.jpg" class="d-block w-100" alt="Préstamos">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Préstamos</h5>
                         <p>Ingrese al sistema de préstamos, con múltiples beneficios</p>

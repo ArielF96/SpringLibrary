@@ -32,17 +32,18 @@ public class LibroServicio {
     private EditorialRepositorio editorialRepo;
 
     @Transactional
-    public Libro crear(Long isbn, String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados, String autorId, String editorialId, Boolean alta) throws Exception {
+    public Libro crear(Long isbn, String titulo, Integer anio, Integer ejemplares, 
+            String autorId, String editorialId) throws Exception {
 
-        validar(isbn, titulo, anio, ejemplares, ejemplaresPrestados);
+        validar(isbn, titulo, anio, ejemplares);
 
         Libro l = new Libro();
         l.setIsbn(isbn);
         l.setTitulo(titulo);
         l.setAnio(anio);
         l.setEjemplares(ejemplares);
-        l.setEjemplaresPrestados(ejemplaresPrestados);
-        l.setEjemplaresRestantes(ejemplares - ejemplaresPrestados);
+        l.setEjemplaresPrestados(0);
+        l.setEjemplaresRestantes(ejemplares);
 
         Optional<Autor> respuesta = autorRepo.findById(autorId);
         if (respuesta.isPresent()) {
@@ -66,7 +67,8 @@ public class LibroServicio {
     }
 
     @Transactional
-    public Libro modificar(String id, Long isbn, String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados, String autorId, String editorialId) throws Exception {
+    public Libro modificar(String id, Long isbn, String titulo, Integer anio, Integer ejemplares, 
+            Integer ejemplaresPrestados, String autorId, String editorialId) throws Exception {
 
         Optional<Libro> respuesta = libroRepo.findById(id);
         if (respuesta.isPresent()) {
@@ -99,6 +101,34 @@ public class LibroServicio {
             throw new Exception("No se encontró el libro");
         }
     }
+    
+    @Transactional
+    public Libro prestamo(String id) throws Exception {
+        
+        Optional<Libro> respuesta = libroRepo.findById(id);
+        if (respuesta.isPresent()) {
+            Libro l = respuesta.get();
+            l.setEjemplaresPrestados(l.getEjemplaresPrestados()+1);
+            l.setEjemplaresRestantes(l.getEjemplares()-l.getEjemplaresPrestados());
+            return libroRepo.save(l);
+        } else {
+            throw new Exception("No se encontró el libro");
+        }
+    }
+    
+    @Transactional
+    public Libro devolucion(String id) throws Exception {
+        
+        Optional<Libro> respuesta = libroRepo.findById(id);
+        if (respuesta.isPresent()) {
+            Libro l = respuesta.get();
+            l.setEjemplaresPrestados(l.getEjemplaresPrestados()-1);
+            l.setEjemplaresRestantes(l.getEjemplares()-l.getEjemplaresPrestados());
+            return libroRepo.save(l);
+        } else {
+            throw new Exception("No se encontró el libro");
+        }
+    }
 
     @Transactional
     public void eliminar(String id) throws Exception {
@@ -112,10 +142,15 @@ public class LibroServicio {
             throw new Exception("No se encontró el libro");
         }
     }
-    
+       
     @Transactional(readOnly = true)
     public List<Libro> listar(){
         return libroRepo.listar();
+    }
+    
+    @Transactional(readOnly = true)
+    public List<Libro> listarDisponibles(){
+        return libroRepo.listarDisponibles();
     }
     
     @Transactional(readOnly = true)
@@ -127,8 +162,13 @@ public class LibroServicio {
     public Libro buscarPorTitulo(String titulo){
         return libroRepo.buscarPorTitulo(titulo);
     }
+    
+    @Transactional(readOnly = true)
+    public Libro buscarPorIsbn(Long isbn){
+        return libroRepo.buscarPorIsbn(isbn);
+    } 
       
-    public void validar(Long isbn, String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados) throws Exception {
+    public void validar(Long isbn, String titulo, Integer anio, Integer ejemplares) throws Exception {
 
         if (isbn == null || isbn < 1) {
             throw new Exception("El ISBN es inválido");
@@ -142,8 +182,8 @@ public class LibroServicio {
         if (ejemplares == null || ejemplares < 1) {
             throw new Exception("La cantidad de ejemplares es inválida");
         }
-        if (ejemplaresPrestados > ejemplares) {
-            throw new Exception("Cantidades inválidas");
+        if (buscarPorIsbn(isbn) != null) {
+            throw new Exception("El libro ya existe en la base de datos");
         }
     }
      

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Prestamo</title>
+    </head>
+    <body>
+
+        <div class="container">
+            <h1 style="text-align: center ; padding: 25px 0px" th:text="${prestamo.cliente.nombre + ', ' + prestamo.cliente.apellido}"></h1>
+        </div>
+
+        <div class="text-center">
+            <h3>Editar Préstamo</h3>    
+        </div>
+        
+        <p class="container" th:text="${exito}" style="font-style: italic"></p>
+        <p class="container" th:text="${error}" style="font-style: italic; color: red"></p>
+          
+        <form th:action="@{/prestamo/editar/__${prestamo.id}__}" method="POST">    
+            <div class="container">
+                
+                <label class="form-label">Clientes</label>               
+                    <select class="form-select" name="clienteId" >
+                        <option th:each="cliente : ${clientes}" name="clienteId" th:value="${cliente.id}" th:text="${cliente.apellido + ', ' + cliente.nombre}" th:selected="${prestamo.cliente != null && cliente.id == prestamo.cliente.id}"></option>
+                    </select>
+                    
+                <label class="form-label">Libros disponibles</label>               
+                    <select class="form-select" name="libroId" >
+                        <option th:each="libro : ${libros}" name="libroId" th:value="${libro.id}" th:text="${libro.anio + ', ' + libro.titulo + ', ' + libro.autor.apellido}" th:selected="${prestamo.libro != null && libro.id == prestamo.libro.id}"></option>
+                    </select>
+                 
+                <!--
+                <label class="form-label">Devolución</label> 
+                <input class="form-control" type="text" name="devolucion" th:value="${#dates.format(prestamo.fechaDevolucion, 'dd/MM/yyyy')}"/>
+                -->
+                <label class="form-label fechas">Devolución</label>                            
+                <input class="form-control" type="date" name="fechaDevolucion" th:value="${prestamo.fechaDevolucion}"/>
+                
+            </div><br> 
+
+            <div class="container">
+                <button type="submit" class="btn btn-success">Editar información</button>         
+                <a th:href="@{/prestamo/lista/}" class="btn btn-primary">Préstamos</a> 
+                <a th:href="@{/}" class="btn btn-danger">Volver a la página principal</a>
+            </div>
+        </form> <br>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    </body>
+</html>
